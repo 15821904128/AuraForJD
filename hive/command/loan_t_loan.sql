@@ -1,0 +1,3 @@
+
+LOAD DATA INPATH '/jdtest/loan/' OVERWRITE INTO TABLE t_loan;
+INSERT OVERWRITE TABLE t_loan SELECT * FROM t_loan WHERE UID!='uid';

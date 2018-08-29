@@ -1,0 +1,85 @@
+# -*- coding:utf-8 -*-
+
+from flask import Flask, render_template
+import json
+from models import Chart
+from query_presto import Presto_Query
+from query_redis import Redis_Query
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    """
+    presto=Presto_Query()
+
+    age_price_tuples20=presto.query_age_price20()
+    age_price_keys20=presto.getKeys(age_price_tuples20)
+    age_price_values20=presto.getValues(age_price_tuples20)
+    
+    age_price_tuples25=presto.query_age_price25()
+    age_price_keys25=presto.getKeys(age_price_tuples25)
+    age_price_values25=presto.getValues(age_price_tuples25)
+
+    age_price_tuples30=presto.query_age_price30()
+    age_price_keys30=presto.getKeys(age_price_tuples30)
+    age_price_values30=presto.getValues(age_price_tuples30)
+
+    age_price_tuples35=presto.query_age_price35()
+    age_price_keys35=presto.getKeys(age_price_tuples35)
+    age_price_values35=presto.getValues(age_price_tuples35)
+
+    age_price_tuples40=presto.query_age_price40()
+    age_price_keys40=presto.getKeys(age_price_tuples40)
+    age_price_values40=presto.getValues(age_price_tuples40)
+
+    age_price_tuples45=presto.query_age_price45()
+    age_price_keys45=presto.getKeys(age_price_tuples45)
+    age_price_values45=presto.getValues(age_price_tuples45)
+
+    age_price_tuples50=presto.query_age_price50()
+    age_price_keys50=presto.getKeys(age_price_tuples50)
+    age_price_values50=presto.getValues(age_price_tuples50)
+   
+    chart1 = Chart() \
+        .x_axis(data=age_price_keys20) \
+        .y_axis(formatter="{value}") \
+        .line(u"20", age_price_values20) \
+        .line(u"25", age_price_values25) \
+        .line(u"30", age_price_values30) \
+        .line(u"35", age_price_values35) \
+        .line(u"40", age_price_values40) \
+        .line(u"45", age_price_values45) \
+        .line(u"50", age_price_values50)
+
+    sex_loan_tuples0=presto.query_sex_loan0()
+    sex_loan_keys0=presto.getKeys(sex_loan_tuples0)
+    sex_loan_values0=presto.getValues(sex_loan_tuples0)
+
+    sex_loan_tuples1=presto.query_sex_loan1()
+    sex_loan_keys1=presto.getKeys(sex_loan_tuples1)
+    sex_loan_values1=presto.getValues(sex_loan_tuples1)
+
+    chart2 = Chart() \
+        .x_axis(data=sex_loan_keys0) \
+        .y_axis(formatter="{value}") \
+        .bar(u"M", sex_loan_values0, show_item_label=True) \
+        .bar(u"F", sex_loan_values1, show_item_label=True)
+    """
+    redis=Redis_Query()
+    click_dict=redis.query_click()
+    chart3 = Chart().pie("饼图", data=click_dict)
+
+    render = {
+        "title": u"京东金融信贷需求分析系统",
+        "templates": [
+          #  {"type": "chart", "title":u"各年龄段消费者每日购买商品总价值", "option": json.dumps(chart1, indent=2)},
+          #  {"type": "chart", "title":u"男女消费者每日借贷金额 ", "option": json.dumps(chart2, indent=2)},
+            {"type": "chart", "title":u"每个页面累计点击次数", "option": json.dumps(chart3, indent=2)}
+          #  {"type": "chart", "title":u"不同年龄段消费总金额", "option": json.dumps(chart3, indent=2)}
+        ]
+    }
+    return render_template("main.html", **render)
+
+if __name__ == "__main__":
+    app.run(debug=True)

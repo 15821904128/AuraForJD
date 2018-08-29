@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from pyhive import presto
+
+PRESTO_SERVER = {'host': 'master', 'port': 8080, 'catalog': 'hive', 'schema': 'jdtest'}
+AGE_PRICE_QUERY20="select o.buy_time, sum((o.price * o.qty) - o.discount) as totalPrice from t_order o join t_user u on o.uid = u.uid where u.age = '20' group by o.buy_time order by o.buy_time"
+AGE_PRICE_QUERY25="select o.buy_time, sum((o.price * o.qty) - o.discount) as totalPrice from t_order o join t_user u on o.uid = u.uid where u.age = '25' group by o.buy_time order by o.buy_time"
+AGE_PRICE_QUERY30="select o.buy_time, sum((o.price * o.qty) - o.discount) as totalPrice from t_order o join t_user u on o.uid = u.uid where u.age = '30' group by o.buy_time order by o.buy_time"
+AGE_PRICE_QUERY35="select o.buy_time, sum((o.price * o.qty) - o.discount) as totalPrice from t_order o join t_user u on o.uid = u.uid where u.age = '35' group by o.buy_time order by o.buy_time"
+AGE_PRICE_QUERY40="select o.buy_time, sum((o.price * o.qty) - o.discount) as totalPrice from t_order o join t_user u on o.uid = u.uid where u.age = '40' group by o.buy_time order by o.buy_time"
+AGE_PRICE_QUERY45="select o.buy_time, sum((o.price * o.qty) - o.discount) as totalPrice from t_order o join t_user u on o.uid = u.uid where u.age = '45' group by o.buy_time order by o.buy_time"
+AGE_PRICE_QUERY50="select o.buy_time, sum((o.price * o.qty) - o.discount) as totalPrice from t_order o join t_user u on o.uid = u.uid where u.age = '50' group by o.buy_time order by o.buy_time"
+
+SEX_LOAN_QUERY0="select cast(t_loan.loan_time as date), sum(t_loan.loan_amount) as total_loan_amount from t_loan join t_user on t_loan.uid = t_user.uid where t_user.sex = '01' group by cast(t_loan.loan_time as date)"
+SEX_LOAN_QUERY1="select cast(t_loan.loan_time as date), sum(t_loan.loan_amount) as total_loan_amount from t_loan join t_user on t_loan.uid = t_user.uid where t_user.sex = '02' group by cast(t_loan.loan_time as date)"
+
+class Presto_Query:
+
+    def query_age_price20(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(AGE_PRICE_QUERY20)
+        tuples=cursor.fetchall()
+        return tuples
+
+    def query_age_price25(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(AGE_PRICE_QUERY25)
+        tuples=cursor.fetchall()
+        return tuples
+
+    def query_age_price30(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(AGE_PRICE_QUERY30)
+        tuples=cursor.fetchall()
+        return tuples
+
+    def query_age_price35(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(AGE_PRICE_QUERY35)
+        tuples=cursor.fetchall()
+        return tuples
+
+    def query_age_price40(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(AGE_PRICE_QUERY40)
+        tuples=cursor.fetchall()
+        return tuples
+
+    def query_age_price45(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(AGE_PRICE_QUERY45)
+        tuples=cursor.fetchall()
+        return tuples
+
+    def query_age_price50(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(AGE_PRICE_QUERY50)
+        tuples=cursor.fetchall()
+        return tuples
+
+    def getKeys(self,tuples):
+        keys=[]
+        for tuple in tuples:
+            keys.append(tuple[0])
+        return keys
+
+    def getValues(self, tuples):
+        values=[]
+        for tuple in tuples:
+            values.append(tuple[1])
+        return values
+  
+    def query_sex_loan0(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(SEX_LOAN_QUERY0)
+        tuples=cursor.fetchall()
+        return tuples 
+
+    def query_sex_loan1(self):
+        conn = presto.connect(**PRESTO_SERVER)
+        cursor = conn.cursor()
+        cursor.execute(SEX_LOAN_QUERY1)
+        tuples=cursor.fetchall()
+        return tuples 
